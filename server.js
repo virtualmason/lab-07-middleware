@@ -5,31 +5,21 @@ const express = require('express');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-
+const router = require('./routes');
 app.get('/a', (req,res, err, ) => {
-  
   res.status(200).send('Route A');
-  
 });
 
-app.get('/b/', (req,res) => {
-  let number = req.query
-  number = Math.sqrt((number));
-  res.status(200).send(number);
+app.use(router);
+app.use('/b/:id', (req,res) => {
+  let number = req.params.id
+  let newNum =  Math.pow(number,2);
+  res.send({newNum});
 });
 
-app.get('/c', (req,res) => {
-  res.status(200).send('Route C');
-});
 
-app.get('/d', (req,res) => {
-  throw error;
-  res.status(200).send('Route D');
-});
 app.get('*', function(req, res, next) {
-  setImmediate(() => { 
-    next(new Error('Ohh!! Something went wrong')); 
-  });
+    next(new Error('no route')); 
 });
 
 app.use(function (req, res, next) {
